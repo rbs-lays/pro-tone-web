@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro-Tone Electronics | Management System</title>
+    <style>
+        /* CSS - ESTÉTICA BASEADA NA SUA IMAGEM */
+        :root {
+            --primary-teal: #2d5a5a; /* Verde musgo azulado */
+            --dark-teal: #1e3d3d;
+            --accent-dot: #8fb1b1;
+            --light-bg: #f0f4f4;
+            --white: #ffffff;
+            --text-dark: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        /* Header com estilo da Logo que criamos */
+        header {
+            background-color: var(--primary-teal);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            letter-spacing: 3px;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 25px;
+            padding: 30px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Cards Estilo "Flyer" */
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            border-top: 6px solid var(--primary-teal);
+        }
+
+        h2 {
+            color: var(--primary-teal);
+            border-bottom: 2px solid var(--light-bg);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* Formulário de Cadastro */
+        form input, form textarea, form select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            background: #fafafa;
+        }
+
+        .btn-register {
+            background-color: var(--primary-teal);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-register:hover {
+            background-color: var(--dark-teal);
+        }
+
+        /* Lista de Espera e Agendamentos */
+        .order-item {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .status-badge {
+            background: var(--primary-teal);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .info-group strong { color: var(--dark-teal); }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>PRO-TONE ELECTRONICS</h1>
+    <p>Technical Service & Certified Maintenance (SENAI Certified)</p>
+</header>
+
+<div class="main-container">
+    <section class="card">
+        <h2>New Service Entry</h2>
+        <form id="serviceForm">
+            <input type="text" id="client" placeholder="Client Name" required>
+            <input type="text" id="device" placeholder="Equipment (e.g. iPhone 11, Guitar Amp)" required>
+            <select id="priority">
+                <option value="Normal">Normal Flow</option>
+                <option value="Waiting Part">Waiting for Part</option>
+                <option value="Urgent">Urgent Priority</option>
+            </select>
+            <textarea id="issue" rows="4" placeholder="Detailed technical issue..."></textarea>
+            <button type="submit" class="btn-register">Register Device</button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>Active Orders & Waitlist</h2>
+        <div id="ordersList">
+            <div class="order-item">
+                <div class="info-group">
+                    <strong>Exemplo: Robson</strong><br>
+                    <span>Fender Stratocaster - Wiring Fix</span>
+                </div>
+                <span class="status-badge">In Progress</span>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    // LÓGICA DE GERENCIAMENTO (Simulando o Backend Java)
+    const form = document.getElementById('serviceForm');
+    const ordersList = document.getElementById('ordersList');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Pegando os dados dos inputs
+        const client = document.getElementById('client').value;
+        const device = document.getElementById('device').value;
+        const priority = document.getElementById('priority').value;
+        const issue = document.getElementById('issue').value;
+
+        // Criando o elemento na lista (Simulando a criação do objeto ServiceOrder)
+        const orderDiv = document.createElement('div');
+        orderDiv.className = 'order-item';
+        
+        orderDiv.innerHTML = `
+            <div class="info-group">
+                <strong>${client}</strong><br>
+                <span>${device} - ${issue.substring(0, 30)}...</span>
+            </div>
+            <span class="status-badge" style="background: ${priority === 'Urgent' ? '#a34d4d' : 'var(--primary-teal)'}">
+                ${priority}
+            </span>
+        `;
+
+        // Adiciona ao topo da lista
+        ordersList.prepend(orderDiv);
+
+        // Limpa o formulário
+        form.reset();
+    });
+</script>
+
+</body>
+</html>
